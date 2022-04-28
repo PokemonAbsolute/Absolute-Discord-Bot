@@ -13,6 +13,18 @@
     "tslib" "^2.3.1"
     "zod" "^3.11.6"
 
+"@discordjs/builders@^0.13.0":
+  "integrity" "sha512-4L9y26KRNNU8Y7J78SRUN1Uhava9D8jfit/YqEaKi8gQRc7PdqKqk2poybo6RXaiyt/BgKYPfcjxT7WvzGfYCA=="
+  "resolved" "https://registry.npmjs.org/@discordjs/builders/-/builders-0.13.0.tgz"
+  "version" "0.13.0"
+  dependencies:
+    "@sapphire/shapeshift" "^2.0.0"
+    "@sindresorhus/is" "^4.6.0"
+    "discord-api-types" "^0.31.1"
+    "fast-deep-equal" "^3.1.3"
+    "ts-mixer" "^6.0.1"
+    "tslib" "^2.3.1"
+
 "@discordjs/collection@^0.4.0":
   "integrity" "sha512-zmjq+l/rV35kE6zRrwe8BHqV78JvIh2ybJeZavBi5NySjWXqN3hmmAKg7kYMMXSeiWtSsMoZ/+MQi0DiQWy2lw=="
   "resolved" "https://registry.npmjs.org/@discordjs/collection/-/collection-0.4.0.tgz"
@@ -42,6 +54,11 @@
   "resolved" "https://registry.npmjs.org/@sapphire/async-queue/-/async-queue-1.3.1.tgz"
   "version" "1.3.1"
 
+"@sapphire/shapeshift@^2.0.0":
+  "integrity" "sha512-Z1ISLP9pNI3jpKJxx82xtDpEsfomhJ3iPqcKdYLjAHmQP2X5yqQF6phA0Wd+MmdXp081wepOiT59XEN0xdTVvQ=="
+  "resolved" "https://registry.npmjs.org/@sapphire/shapeshift/-/shapeshift-2.1.0.tgz"
+  "version" "2.1.0"
+
 "@sapphire/snowflake@^3.2.1":
   "integrity" "sha512-ula2O0kpSZtX9rKXNeQMrHwNd7E4jPDJYUXmEGTFdMRfyfMw+FPyh04oKMjAiDuOi64bYgVkOV3MjK+loImFhQ=="
   "resolved" "https://registry.npmjs.org/@sapphire/snowflake/-/snowflake-3.2.2.tgz"
@@ -52,7 +69,7 @@
   "resolved" "https://registry.npmjs.org/@sindresorhus/is/-/is-0.14.0.tgz"
   "version" "0.14.0"
 
-"@sindresorhus/is@^4.2.0":
+"@sindresorhus/is@^4.2.0", "@sindresorhus/is@^4.6.0":
   "integrity" "sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw=="
   "resolved" "https://registry.npmjs.org/@sindresorhus/is/-/is-4.6.0.tgz"
   "version" "4.6.0"
@@ -72,7 +89,7 @@
     "@types/node" "*"
     "form-data" "^3.0.0"
 
-"@types/node@*":
+"@types/node@*", "@types/node@^17.0.29":
   "integrity" "sha512-tx5jMmMFwx7wBwq/V7OohKDVb/JwJU5qCVkeLMh1//xycAJ/ESuw9aJ9SEtlCZDYi2pBfe4JkisSoAtbOsBNAA=="
   "resolved" "https://registry.npmjs.org/@types/node/-/node-17.0.29.tgz"
   "version" "17.0.29"
@@ -298,6 +315,11 @@
   "resolved" "https://registry.npmjs.org/discord-api-types/-/discord-api-types-0.29.0.tgz"
   "version" "0.29.0"
 
+"discord-api-types@^0.31.1":
+  "integrity" "sha512-gpzXTvFVg7AjKVVJFH0oJGC0q0tO34iJGSHZNz9u3aqLxlD6LfxEs9wWVVikJqn9gra940oUTaPFizCkRDcEiA=="
+  "resolved" "https://registry.npmjs.org/discord-api-types/-/discord-api-types-0.31.2.tgz"
+  "version" "0.31.2"
+
 "discord-api-types@^0.32.0":
   "integrity" "sha512-i6HyCwWRocvtIcM7hamI3eQTCxLN/UvWtm/JktaXRSWDmASfhHam2juhej+e4U/Q/Fni1uUlyloMCBTL04Dl6Q=="
   "resolved" "https://registry.npmjs.org/discord-api-types/-/discord-api-types-0.32.0.tgz"
@@ -351,6 +373,11 @@
   "integrity" "sha512-8/uIhbG12Csjy2JEW7D9pHbreaVaS/OpN3ycnyvElTdwM5n6GY6W6e2IPemfvGZeUMqZ9A/3GqIZMgKnBhAw/Q=="
   "resolved" "https://registry.npmjs.org/escape-goat/-/escape-goat-2.1.1.tgz"
   "version" "2.1.1"
+
+"fast-deep-equal@^3.1.3":
+  "integrity" "sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q=="
+  "resolved" "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz"
+  "version" "3.1.3"
 
 "fill-range@^7.0.1":
   "integrity" "sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ=="
@@ -846,7 +873,7 @@
   "resolved" "https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz"
   "version" "0.0.3"
 
-"ts-mixer@^6.0.0":
+"ts-mixer@^6.0.0", "ts-mixer@^6.0.1":
   "integrity" "sha512-hvE+ZYXuINrx6Ei6D6hz+PTim0Uf++dYbK9FFifLNwQj+RwKquhQpn868yZsCtJYiclZF1u8l6WZxxKi+vv7Rg=="
   "resolved" "https://registry.npmjs.org/ts-mixer/-/ts-mixer-6.0.1.tgz"
   "version" "6.0.1"
