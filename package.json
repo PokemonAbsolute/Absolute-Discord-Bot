@@ -2,10 +2,10 @@
   "name": "absolute-discord-bot",
   "version": "1.0.0",
   "description": "A Discord bot that connects to the Pokemon Absolute database to serve real-time data over Discord.",
-  "main": "src/bot.js",
+  "main": "./build/bot.js",
   "repository": "https://github.com/Toxocious/Absolute-Discord-Bot.git",
   "author": "Jess <toxocious@gmail.com>",
-  "license": "GNU GPL 3",
+  "license": "",
   "private": false,
   "dependencies": {
     "@discordjs/rest": "^0.4.1",
@@ -15,6 +15,8 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "start": "nodemon ./src/bot.js"
+    "build": "tsc",
+    "dev": "tsc && node -r dotenv/config ./build/bot.js",
+    "start": "tsc && node ./src/bot.tsx"
   }
 }
