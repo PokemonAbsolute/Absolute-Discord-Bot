@@ -10,17 +10,18 @@
   "dependencies": {
     "@discordjs/builders": "^0.13.0",
     "@discordjs/rest": "^0.4.1",
-    "discord-api-types": "^0.32.0",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
-    "nodemon": "^2.0.15"
+    "ts-node": "^10.7.0"
   },
   "devDependencies": {
-    "@types/node": "^17.0.29"
+    "@types/node": "^17.0.29",
+    "discord-api-types": "^0.32.0",
+    "nodemon": "^2.0.15"
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsc && node -r dotenv/config ./build/bot.js",
-    "start": "tsc && node ./src/bot.tsx"
+    "start": "nodemon ./src/bot.ts"
   }
 }
