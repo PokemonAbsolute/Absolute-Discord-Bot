@@ -4,6 +4,9 @@ import { MessageEmbed } from 'discord.js';
 import { CommandInterface } from '../types/command';
 
 export const TEST: CommandInterface = {
+  name: 'test',
+  description: 'Generic test command. Does nothing.',
+
   data: new SlashCommandBuilder()
     .setName('test')
     .setDescription('Generic test command. Does nothing.'),
@@ -14,9 +17,7 @@ export const TEST: CommandInterface = {
 
       const COMMAND_EMBED = new MessageEmbed();
       COMMAND_EMBED.setTitle('Absolute Bot | Test Command');
-      COMMAND_EMBED.setDescription(
-        'Generic test command. Does nothing.'
-      );
+      COMMAND_EMBED.setDescription('Generic test command. Does nothing.');
 
       await interaction.editReply({ embeds: [COMMAND_EMBED] });
       return;

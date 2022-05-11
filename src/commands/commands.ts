@@ -1,30 +1,33 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed } from 'discord.js';
 
+import { COMMAND_DICTIONARY } from '../commands';
+
 import { CommandInterface } from '../types/command';
 
 export const COMMAND_LIST: CommandInterface = {
+  name: 'commands',
+  description: 'Provides a list of available bot commands.',
+
   data: new SlashCommandBuilder()
     .setName('commands')
     .setDescription('Provides a list of available bot commands.'),
 
-  run: async (interaction) => {
+  run: async (interaction): Promise<void> => {
     try {
       await interaction.deferReply();
 
-      const COMMAND_EMBED = new MessageEmbed();
-      COMMAND_EMBED.setTitle('Absolute Bot | Available Commands');
-      COMMAND_EMBED.setDescription(
-        'Provides a list of available Absolute Bot commands.'
-      );
-      COMMAND_EMBED.addField(
-        'commands',
-        'Provides a list of available Absolute Bot commands.'
-      );
-      COMMAND_EMBED.addField('test', 'Generic test command. Does nothing.');
+      const COMMAND_EMBED: MessageEmbed = new MessageEmbed()
+        .setColor('#4a618f')
+        .setTitle('Available Commands')
+        .setDescription('Provides a list of available Absolute Bot commands.')
+        .setTimestamp();
+
+      for (const COMMAND of COMMAND_DICTIONARY) {
+        COMMAND_EMBED.addField(COMMAND.name, COMMAND.description);
+      }
 
       await interaction.editReply({ embeds: [COMMAND_EMBED] });
-      return;
     } catch (err) {
       console.warn('[ERROR | Command List]', err);
     }
