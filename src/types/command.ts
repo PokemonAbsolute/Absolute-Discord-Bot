@@ -8,6 +8,8 @@ export interface CommandInterface {
   name: string;
   description: string;
 
-  data: SlashCommandBuilder | SlashCommandSubcommandBuilder;
+  data:
+    | Omit<SlashCommandBuilder, 'addSubcommandGroup' | 'addSubcommand'>
+    | SlashCommandSubcommandBuilder;
   run: (interaction: CommandInteraction) => Promise<void>;
 }
