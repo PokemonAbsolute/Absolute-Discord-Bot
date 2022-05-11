@@ -5,7 +5,7 @@ import { COMMAND_DICTIONARY } from '../commands';
 
 import { CommandInterface } from '../types/command';
 
-export const COMMAND_LIST: CommandInterface = {
+const COMMAND_LIST: CommandInterface = {
   name: 'commands',
   description: 'Provides a list of available bot commands.',
 
@@ -18,9 +18,9 @@ export const COMMAND_LIST: CommandInterface = {
       await interaction.deferReply();
 
       const COMMAND_EMBED: MessageEmbed = new MessageEmbed()
-        .setColor('#4a618f')
         .setTitle('Available Commands')
         .setDescription('Provides a list of available Absolute Bot commands.')
+        .setColor('#4a618f')
         .setTimestamp();
 
       for (const COMMAND of COMMAND_DICTIONARY) {
@@ -33,3 +33,5 @@ export const COMMAND_LIST: CommandInterface = {
     }
   },
 };
+
+export default COMMAND_LIST;

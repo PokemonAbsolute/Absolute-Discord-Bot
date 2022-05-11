@@ -3,7 +3,7 @@ import { MessageEmbed } from 'discord.js';
 
 import { CommandInterface } from '../types/command';
 
-export const TEST: CommandInterface = {
+const TEST: CommandInterface = {
   name: 'test',
   description: 'Generic test command. Does nothing.',
 
@@ -15,14 +15,18 @@ export const TEST: CommandInterface = {
     try {
       await interaction.deferReply();
 
-      const COMMAND_EMBED = new MessageEmbed();
-      COMMAND_EMBED.setTitle('Absolute Bot | Test Command');
-      COMMAND_EMBED.setDescription('Generic test command. Does nothing.');
+      const COMMAND_EMBED = new MessageEmbed()
+        .setTitle('Absolute Bot | Test Command')
+        .setDescription('Generic test command. Does nothing.')
+        .setColor('#4a618f')
+        .setTimestamp();
 
       await interaction.editReply({ embeds: [COMMAND_EMBED] });
       return;
     } catch (err) {
-      console.warn('[ERROR | Command List]', err);
+      console.warn('[Command | Test] An error occurred:', err);
     }
   },
 };
+
+export default TEST;
