@@ -8,7 +8,7 @@
 
   <img src="https://img.shields.io/github/issues/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
   <img src="https://img.shields.io/github/stars/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
-  <img src="https://img.shields.io/github/license/Toxocious/  Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
+  <img src="https://img.shields.io/github/license/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
 </div>
 
 
