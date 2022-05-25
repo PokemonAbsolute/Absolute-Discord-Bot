@@ -28,13 +28,16 @@ const LAST_SEEN: CommandInterface = {
 
       const USER_OPTION = interaction.options.getString('user', true);
 
-      const USER_DATA: any = await MySQL.doQuery(
+      const USER_DATA_QUERY: any = await MySQL.doQuery(
         'SELECT `Username`, `Last_Active` FROM `users` WHERE UPPER(`Username`) = UPPER(?) OR `ID` = ? LIMIT 1',
         [USER_OPTION, USER_OPTION]
       );
+      const USER_DATA = USER_DATA_QUERY[0];
 
-      if (typeof USER_DATA === 'undefined' || USER_DATA[0].length < 1) {
-        new MessageEmbed()
+      let COMMAND_EMBED: MessageEmbed;
+
+      if (typeof USER_DATA === 'undefined') {
+        COMMAND_EMBED = new MessageEmbed()
           .setTitle('Command Error')
           .addField(
             'Description',
@@ -42,16 +45,14 @@ const LAST_SEEN: CommandInterface = {
           )
           .setColor('#FF0000')
           .setTimestamp();
-
-        return;
+      } else {
+        COMMAND_EMBED = new MessageEmbed()
+          .setTitle('Last Seen')
+          .addField('User', USER_DATA?.Username, true)
+          .addField('Last Seen', lastSeenOn(USER_DATA?.Last_Active), true)
+          .setColor('#4a618f')
+          .setTimestamp();
       }
-
-      const COMMAND_EMBED = new MessageEmbed()
-        .setTitle('Last Seen')
-        .addField('User', USER_DATA[0].Username, true)
-        .addField('Last Seen', lastSeenOn(USER_DATA[0].Last_Active), true)
-        .setColor('#4a618f')
-        .setTimestamp();
 
       await interaction.editReply({ embeds: [COMMAND_EMBED] });
     } catch (err) {
