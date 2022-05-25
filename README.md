@@ -17,8 +17,8 @@
 - [Table of Contents](#table-of-contents)
 - [About The Project](#about-the-project)
   - [Tech Stack](#tech-stack)
-- [Features](#features)
-- [Available Commands](#available-commands)
+  - [Features](#features)
+  - [Available Commands](#available-commands)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -36,13 +36,11 @@
 - TypeScript
 - MySQL
 
-
-
-## Features
+### Features
 - Direct database connection to allow custom Discord commands to perform database queries
 - Connect your Pok&eacute;mon Absolute account to the Discord Bot
 
-## Available Commands
+### Available Commands
 - **/commands**
   - Provides a list of available Discord commands
 - **/lastseen <user>**
