@@ -18,6 +18,7 @@
 - [About The Project](#about-the-project)
   - [Tech Stack](#tech-stack)
 - [Features](#features)
+  - [Available Commands](#available-commands)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -39,7 +40,17 @@
 
 ## Features
 - Direct database connection to allow custom Discord commands to perform database queries
-- Connect your Pok&eacute;mon Absolute connect to the Discord Bot
+- Connect your Pok&eacute;mon Absolute account to the Discord Bot
+
+### Available Commands
+**/commands**
+- Provides a list of available Discord commands
+**/lastseen <user>**
+- Provides when the specified user was last online on the RPG
+**/rarity <species> <forme OPTIONAL>**
+- Provides data on how many of a given species of Pok&eacute;mon are in game
+**/test**
+- Generic test command that doesn't do anything
 
 
 
