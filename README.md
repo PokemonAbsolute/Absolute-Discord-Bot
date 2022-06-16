@@ -7,6 +7,7 @@
   This repository contains the source code for the [Pok&eacute;mon Absolute](https://github.com/Toxocious/Absolute) Discord bot.
 
   <img src="https://img.shields.io/github/issues/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
+  <img src="https://img.shields.io/github/forks/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
   <img src="https://img.shields.io/github/stars/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
   <img src="https://img.shields.io/github/license/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
   <a href="https://hits.seeyoufarm.com">
