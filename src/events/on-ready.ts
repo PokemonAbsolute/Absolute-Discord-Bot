@@ -1,7 +1,10 @@
-import { REST } from '@discordjs/rest';
 import { Client } from 'discord.js';
+
 import { Routes } from 'discord-api-types/v9';
+import { REST } from '@discordjs/rest';
+
 import { COMMAND_DICTIONARY } from '../commands';
+import { CommandInterface } from '../types/command';
 
 export const ON_READY = async (BOT: Client): Promise<void> => {
   try {
@@ -9,22 +12,10 @@ export const ON_READY = async (BOT: Client): Promise<void> => {
       process.env.DISCORD_BOT_TOKEN as string
     );
 
-    const COMMAND_DATA: {
-      name: string;
-      description?: string;
-      type?: number;
-      options?: any;
-    }[] = [];
+    const COMMAND_DATA: CommandInterface[] = [];
 
     COMMAND_DICTIONARY.forEach((command) => {
-      COMMAND_DATA.push(
-        command.data.toJSON() as {
-          name: string;
-          description?: string;
-          type?: number;
-          options?: any;
-        }
-      );
+      COMMAND_DATA.push(command.data.toJSON() as CommandInterface);
     });
 
     await rest.put(

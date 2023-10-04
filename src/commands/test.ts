@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 import { CommandInterface } from '../types/command';
 
@@ -15,7 +15,7 @@ const TEST: CommandInterface = {
     try {
       await interaction.deferReply();
 
-      const COMMAND_EMBED = new MessageEmbed()
+      const COMMAND_EMBED = new EmbedBuilder()
         .setTitle('Absolute Bot | Test Command')
         .setDescription('Generic test command. Does nothing.')
         .setColor('#4a618f')

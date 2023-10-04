@@ -1,7 +1,7 @@
 import { lastSeenOn } from '../util/last-seen';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 import { CommandInterface } from '../types/command';
 import MySQL from '../classes/mysql';
@@ -26,33 +26,42 @@ const LAST_SEEN: CommandInterface = {
     try {
       await interaction.deferReply();
 
-      const USER_OPTION = interaction.options.getString('user', true);
+      const USER_OPTION = interaction.options.get('user', true);
 
-      const USER_DATA_QUERY: any = await MySQL.doQuery(
+      const USER_DATA_QUERY = await MySQL.doQuery(
         'SELECT `Username`, `Last_Active` FROM `users` WHERE UPPER(`Username`) = UPPER(?) OR `ID` = ? LIMIT 1',
         [USER_OPTION, USER_OPTION]
       );
-      const USER_DATA = USER_DATA_QUERY[0];
 
-      let COMMAND_EMBED: MessageEmbed;
+      let COMMAND_EMBED: EmbedBuilder;
 
-      if (typeof USER_DATA === 'undefined') {
-        COMMAND_EMBED = new MessageEmbed()
+      if (typeof USER_DATA_QUERY === 'undefined') {
+        COMMAND_EMBED = new EmbedBuilder()
           .setTitle('Command Error')
-          .addField(
-            'Description',
-            `Unable to find user data for ${USER_OPTION}.`
-          )
+          .addFields({
+            name: 'Description',
+            value: `Unable to find user data for ${USER_OPTION}.`,
+          })
           .setColor('#FF0000')
           .setTimestamp();
-      } else {
-        COMMAND_EMBED = new MessageEmbed()
-          .setTitle('Last Seen')
-          .addField('User', USER_DATA?.Username, true)
-          .addField('Last Seen', lastSeenOn(USER_DATA?.Last_Active), true)
-          .setColor('#4a618f')
-          .setTimestamp();
+
+        return;
       }
+
+      const USER_DATA: { Username: string; Last_Active: number } =
+        USER_DATA_QUERY[0];
+
+      COMMAND_EMBED = new EmbedBuilder()
+        .setTitle('Last Seen')
+        .addFields(
+          { name: 'User', value: USER_DATA.Username ?? 'Unknown User' },
+          {
+            name: 'Last Seen',
+            value: lastSeenOn(USER_DATA.Last_Active ?? 0),
+          }
+        )
+        .setColor('#4a618f')
+        .setTimestamp();
 
       await interaction.editReply({ embeds: [COMMAND_EMBED] });
     } catch (err) {

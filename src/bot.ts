@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import { Client } from 'discord.js';
+import { Client, Events } from 'discord.js';
 
 import MySQL from './classes/mysql';
 
@@ -13,23 +13,29 @@ import { VALIDATE_ENV } from './util/validate-env';
 
 const MYSQL_INSTANCE: MySQL = MySQL.instance;
 
-MYSQL_INSTANCE.connectDatabase().finally(() => {
-  (async () => {
-    if (!VALIDATE_ENV()) {
-      return;
-    }
+MYSQL_INSTANCE.connectDatabase()
+  .catch((err) =>
+    console.error("[Chat] Failed to connect to Absolute's database", err)
+  )
+  .finally(() => {
+    (async () => {
+      if (!VALIDATE_ENV()) {
+        return;
+      }
 
-    const BOT = new Client({
-      intents: INTENT_OPTIONS,
-    });
+      const client = new Client({
+        intents: INTENT_OPTIONS,
+      });
 
-    BOT.once('ready', async () => await ON_READY(BOT));
+      client.once(Events.ClientReady, async () => {
+        return await ON_READY(client);
+      });
 
-    BOT.on(
-      'interactionCreate',
-      async (interaction) => await ON_INTERACTION(interaction)
-    );
+      client.on(
+        'interactionCreate',
+        async (interaction) => await ON_INTERACTION(interaction)
+      );
 
-    await BOT.login(process.env.DISCORD_BOT_TOKEN as string);
-  })();
-});
+      await client.login(process.env.DISCORD_BOT_TOKEN as string);
+    })();
+  });

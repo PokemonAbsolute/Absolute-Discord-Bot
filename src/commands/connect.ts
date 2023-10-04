@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 import { getPlayerbyAuthCode } from '../util/get-player-by-auth-code';
 import { connectDiscordAccount } from '../util/connect-discord-account';
@@ -16,10 +16,10 @@ const CONNECT: CommandInterface = {
     .setDescription(
       'Connects your Discord account to your Pok&eacute;mon Absolute RPG account.'
     )
-    .addStringOption((option) =>
+    .addUserOption((option) =>
       option
         .setName('auth_code')
-        .setDescription("Authentication code of the player's account.")
+        .setDescription("Authentication code of the player's account")
         .setRequired(true)
     ),
 
@@ -27,29 +27,29 @@ const CONNECT: CommandInterface = {
     try {
       await interaction.deferReply();
 
-      const AUTH_CODE = interaction.options.getString('auth_code', true);
+      const AUTH_CODE = interaction.options.get('auth_code') as unknown;
 
-      const PLAYER_DATA = await getPlayerbyAuthCode(AUTH_CODE);
+      const PLAYER_DATA = await getPlayerbyAuthCode(AUTH_CODE as string);
 
-      let COMMAND_EMBED: MessageEmbed;
+      let COMMAND_EMBED: EmbedBuilder;
 
       if (typeof PLAYER_DATA === 'undefined') {
-        COMMAND_EMBED = new MessageEmbed()
+        COMMAND_EMBED = new EmbedBuilder()
           .setTitle('Command Error')
-          .addField(
-            'Description',
-            `Unable to find the user corresponding to the entered auth code.`
-          )
+          .addFields({
+            name: 'Description',
+            value: `Unable to find the user corresponding to the entered auth code.`,
+          })
           .setColor('#FF0000')
           .setTimestamp();
       } else {
         const CONNECTION_RESPONSE = await connectDiscordAccount(
           interaction.user.id,
           interaction.user.tag,
-          AUTH_CODE
+          AUTH_CODE as string
         );
 
-        COMMAND_EMBED = new MessageEmbed()
+        COMMAND_EMBED = new EmbedBuilder()
           .setTitle('Account Connected')
           .setDescription(
             `Your account is connected to the RPG account ${CONNECTION_RESPONSE.Username}.`

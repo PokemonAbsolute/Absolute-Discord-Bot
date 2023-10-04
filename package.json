@@ -9,20 +9,25 @@
   "main": "./build/bot.js",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc && node -r dotenv/config ./build/bot.js",
-    "start": "nodemon ./src/bot.ts"
+    "lint": "eslint . --ext .ts",
+    "lint-and-fix": "eslint . --ext .ts --fix",
+    "start:prod": "node -r dotenv/config ./build/bot.js",
+    "start:dev": "nodemon ./src/bot.ts"
   },
   "dependencies": {
     "@discordjs/builders": "^0.13.0",
     "@discordjs/rest": "^0.4.1",
-    "discord.js": "^13.6.0",
+    "discord.js": "^14.13.0",
     "dotenv": "^16.0.0",
     "mysql2": "^2.3.3",
     "ts-node": "^10.7.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.29",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
     "discord-api-types": "^0.32.0",
+    "eslint": "^8.50.0",
     "nodemon": "^2.0.15",
     "typescript": "^5.2.2"
   }

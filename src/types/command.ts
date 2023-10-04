@@ -7,7 +7,6 @@ import { CommandInteraction } from 'discord.js';
 export interface CommandInterface {
   name: string;
   description: string;
-
   data:
     | Omit<SlashCommandBuilder, 'addSubcommandGroup' | 'addSubcommand'>
     | SlashCommandSubcommandBuilder;

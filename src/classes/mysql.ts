@@ -38,19 +38,26 @@ export default class MySQL {
   public async connectDatabase(): Promise<void> {
     return mysql
       .createConnection({
-        host: 'localhost',
-        user: process.env.DATABASE_USER ?? 'absolute',
-        password: process.env.DATABASE_PASSWORD ?? 'qwerty',
-        database: process.env.DATABASE_TABLE ?? 'absolute',
+        host: process.env.MYSQL_HOST,
+        user: process.env.MYSQL_USER,
+        password: process.env.MYSQL_PASSWORD,
+        database: process.env.MYSQL_GAME_DATABASE,
       })
       .then((connection): void => {
         this.connection = connection;
       })
       .catch((error): void => {
-        console.log(
-          '[Chat | Connection] Failed to create MySQL connection for Absolute Chat. [Error]:',
-          error
+        console.error(
+          '[Chat] Failed to create MySQL connection for Absolute Chat.',
+          error,
+          {
+            host: process.env.MYSQL_HOST,
+            user: process.env.MYSQL_USER,
+            password: process.env.MYSQL_PASSWORD,
+            database: process.env.MYSQL_GAME_DATABASE,
+          }
         );
+        process.exit();
       });
   }
 }

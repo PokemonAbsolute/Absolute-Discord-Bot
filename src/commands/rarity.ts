@@ -1,7 +1,7 @@
 import { getPokemonRarity } from '../util/get-pokemon-rarity';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 import { CommandInterface } from '../types/command';
 
@@ -29,35 +29,39 @@ const RARITY: CommandInterface = {
     try {
       await interaction.deferReply();
 
-      const SPECIES = interaction.options.getString('species', true);
-      const FORME = interaction.options.getString('forme', false);
+      const SPECIES = interaction.options.get('species', true) as unknown;
+      const FORME = interaction.options.get('forme', false) as unknown;
 
-      const RARITY_DATA = await getPokemonRarity(SPECIES, FORME);
+      const RARITY_DATA = await getPokemonRarity(
+        SPECIES as string,
+        FORME as string
+      );
 
-      const COMMAND_EMBED = new MessageEmbed()
+      const COMMAND_EMBED = new EmbedBuilder()
         .setTitle(`${SPECIES + (FORME ? `(${FORME})` : '')}'s Rarity`)
         .setColor('#4a618f')
         .setTimestamp();
 
       if (typeof RARITY_DATA === 'undefined') {
-        COMMAND_EMBED.addField(
-          'Error',
-          'An error occurred while fetching the rarity of the specified Pokemon.'
-        );
+        COMMAND_EMBED.addFields({
+          name: 'Error',
+          value:
+            'An error occurred while fetching the rarity of the specified Pokemon.',
+        });
       } else {
-        COMMAND_EMBED.addField(
-          'Total',
-          RARITY_DATA[0]?.TOTAL?.toLocaleString() ?? '0'
-        );
-        COMMAND_EMBED.addField(
-          'Normal',
-          RARITY_DATA[0]?.NORMAL?.toLocaleString() ?? '0',
-          true
-        );
-        COMMAND_EMBED.addField(
-          'Shiny',
-          RARITY_DATA[0]?.SHINY?.toLocaleString() ?? '0',
-          true
+        COMMAND_EMBED.addFields(
+          {
+            name: 'Total',
+            value: RARITY_DATA[0]?.TOTAL?.toLocaleString() ?? '0',
+          },
+          {
+            name: 'Normal',
+            value: RARITY_DATA[0]?.NORMAL?.toLocaleString() ?? '0',
+          },
+          {
+            name: 'Shiny',
+            value: RARITY_DATA[0]?.SHINY?.toLocaleString() ?? '0',
+          }
         );
       }
 

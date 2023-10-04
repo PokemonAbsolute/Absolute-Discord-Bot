@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 import { COMMAND_DICTIONARY } from '../commands';
 
@@ -17,15 +17,17 @@ const COMMAND_LIST: CommandInterface = {
     try {
       await interaction.deferReply();
 
-      const COMMAND_EMBED: MessageEmbed = new MessageEmbed()
+      const embed_fields: Array<{ name: string; value: string }> = [];
+      for (const COMMAND of COMMAND_DICTIONARY) {
+        embed_fields.push({ name: COMMAND.name, value: COMMAND.description });
+      }
+
+      const COMMAND_EMBED: EmbedBuilder = new EmbedBuilder()
         .setTitle('Available Commands')
         .setDescription('Provides a list of available Absolute Bot commands.')
         .setColor('#4a618f')
-        .setTimestamp();
-
-      for (const COMMAND of COMMAND_DICTIONARY) {
-        COMMAND_EMBED.addField(COMMAND.name, COMMAND.description);
-      }
+        .setTimestamp()
+        .addFields(embed_fields);
 
       await interaction.editReply({ embeds: [COMMAND_EMBED] });
     } catch (err) {
