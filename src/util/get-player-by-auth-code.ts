@@ -6,7 +6,7 @@ export const getPlayerbyAuthCode = async (authCode: string): Promise<any> => {
     [authCode]
   ).catch((err) =>
     console.log(
-      '[Function | getPlayerByAuthCode] Error when performing SQL query',
+      '[Absolute / Discord Bot | getPlayerByAuthCode] Error when performing SQL query',
       err
     )
   );

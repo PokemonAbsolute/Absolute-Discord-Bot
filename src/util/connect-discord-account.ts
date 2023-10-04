@@ -22,7 +22,7 @@ export const connectDiscordAccount = async (
     [discordClientID, discordClientTag, authCode]
   ).catch((err) =>
     console.log(
-      '[Function | connectDiscordAccount] Error when performing SQL query',
+      '[Absolute / Discord Bot | connectDiscordAccount] Error when performing SQL query',
       err
     )
   );

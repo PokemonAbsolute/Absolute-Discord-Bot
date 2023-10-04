@@ -14,6 +14,9 @@ export const ON_INTERACTION = async (
       }
     }
   } catch (err) {
-    console.warn('[Event | On Interaction]', err);
+    console.warn(
+      '[Absolute / Discord Bot] Failed to run a command interaction:',
+      err
+    );
   }
 };

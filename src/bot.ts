@@ -15,7 +15,10 @@ const MYSQL_INSTANCE: MySQL = MySQL.instance;
 
 MYSQL_INSTANCE.connectDatabase()
   .catch((err) =>
-    console.error("[Chat] Failed to connect to Absolute's database", err)
+    console.error(
+      "[Absolute / Discord Bot] Failed to connect to Absolute's database",
+      err
+    )
   )
   .finally(() => {
     (async () => {
@@ -27,9 +30,7 @@ MYSQL_INSTANCE.connectDatabase()
         intents: INTENT_OPTIONS,
       });
 
-      client.once(Events.ClientReady, async () => {
-        return await ON_READY(client);
-      });
+      client.once(Events.ClientReady, async () => await ON_READY());
 
       client.on(
         'interactionCreate',

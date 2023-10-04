@@ -26,7 +26,7 @@ export const getPokemonRarity = async (
     POKEMON_RARITY = await MySQL.doQuery(MYSQL_QUERY, MYSQL_PARAMS);
   } catch (err) {
     console.log(
-      '[Rarity Command] Unable to process SQL query:',
+      '[Absolute / Discord Bot | getPokemonRarity] Unable to process SQL query:',
       MYSQL_QUERY,
       [species, forme],
       err

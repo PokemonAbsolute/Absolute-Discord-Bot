@@ -25,7 +25,7 @@ export default class MySQL {
       return rows as any[];
     } catch (error) {
       console.log(
-        '[MySQL Query] An error occurred while performing a SQL quer. [Query]:',
+        '[Absolute / Discord Bot | MySQL Query] An error occurred while performing a SQL query. [Query]:',
         queryString,
         '[Params]:',
         queryParams,
@@ -48,14 +48,8 @@ export default class MySQL {
       })
       .catch((error): void => {
         console.error(
-          '[Chat] Failed to create MySQL connection for Absolute Chat.',
-          error,
-          {
-            host: process.env.MYSQL_HOST,
-            user: process.env.MYSQL_USER,
-            password: process.env.MYSQL_PASSWORD,
-            database: process.env.MYSQL_GAME_DATABASE,
-          }
+          '[Absolute / Discord Bot] Failed to create MySQL connection for Absolute Chat.',
+          error
         );
         process.exit();
       });
