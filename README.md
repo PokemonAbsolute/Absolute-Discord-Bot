@@ -9,9 +9,17 @@
   <img src="https://img.shields.io/github/issues/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
   <img src="https://img.shields.io/github/forks/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
   <img src="https://img.shields.io/github/stars/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
+  <br />
   <img src="https://img.shields.io/github/license/Toxocious/Absolute-Discord-Bot?style=for-the-badge&logo=appveyor" />
-  <a href="https://hits.seeyoufarm.com">
-    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FToxocious%2FAbsolute-Discord-Bot&count_bg=%234A618F&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" />
+  <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FToxocious%Absolute-Discord-Bot">
+    <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FToxocious%Absolute-Discord-Bot&countColor=%2337d67a" />
+  </a>
+  <br /><br />
+
+  Check us out on Discord and consider starring the repository if you liked it!
+
+  <a href="https://discord.gg/Km6btPhs" target="_blank">
+    <img src="https://discord.com/api/guilds/1002005327555862620/widget.png?style=banner2" alt="Discord Banner" />
   </a>
 </div>
 
