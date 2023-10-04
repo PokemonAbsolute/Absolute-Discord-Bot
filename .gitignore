@@ -1,3 +1,13 @@
-/node_modules
-/build
+# package lock files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# node modules
+node_modules
+
+# build/dist files
+build
+
+# environment file
 .env

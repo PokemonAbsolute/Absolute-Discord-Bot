@@ -1,10 +1,10 @@
 import 'dotenv/config';
 
-import { INTENT_OPTIONS } from './config/client-intents';
-
 import { Client } from 'discord.js';
 
 import MySQL from './classes/mysql';
+
+import { INTENT_OPTIONS } from './config/client-intents';
 
 import { ON_READY } from './events/on-ready';
 import { ON_INTERACTION } from './events/on-interaction';
@@ -12,6 +12,7 @@ import { ON_INTERACTION } from './events/on-interaction';
 import { VALIDATE_ENV } from './util/validate-env';
 
 const MYSQL_INSTANCE: MySQL = MySQL.instance;
+
 MYSQL_INSTANCE.connectDatabase().finally(() => {
   (async () => {
     if (!VALIDATE_ENV()) {
