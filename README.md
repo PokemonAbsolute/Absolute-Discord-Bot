@@ -29,7 +29,6 @@
 - [Table of Contents](#table-of-contents)
 - [About The Project](#about-the-project)
   - [Tech Stack](#tech-stack)
-  - [Features](#features)
   - [Available Commands](#available-commands)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
@@ -44,10 +43,6 @@
 - Node.JS
 - TypeScript
 - MySQL
-
-### Features
-- Direct database connection to allow custom Discord commands to perform database queries
-- Connect your Pok&eacute;mon Absolute account to the Discord Bot
 
 ### Available Commands
 - **/commands**
