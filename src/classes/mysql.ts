@@ -25,11 +25,12 @@ export default class MySQL {
       return rows as any[];
     } catch (error) {
       console.log(
-        '[Absolute / Discord Bot | MySQL Query] An error occurred while performing a SQL query. [Query]:',
+        '[Absolute / Discord Bot | MySQL Query] An error occurred while performing a SQL query.',
+        '\n[Query]:\n\t',
         queryString,
-        '[Params]:',
+        '\n[Params]:\n\t',
         queryParams,
-        '[Error]:',
+        '\n[Error]:\n\t',
         error
       );
     }
