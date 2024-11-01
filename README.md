@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./app/images/Assets/banner.png" title="Pokemon Absolute Logo" alt="Pokemon Absolute Logo" />
+  <img src="https://github.com/Toxocious/Absolute/raw/master/app/images/Assets/banner.png" title="Pokemon Absolute Logo" alt="Pokemon Absolute Logo" />
   <h1 align="center">Pok&eacute;mon Absolute &mdash; Discord Bot</h1>
 
   **Pok&eacute;mon Absolute** is an online text-based Pok&eacute;mon RPG, comprised of numerous features adapted from the official Pok&eacute;mon games, as well as entirely new features that enhance the playing experience of Pok&eacute;mon.
@@ -12,7 +12,7 @@
   <br />
 
   <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/Toxocious/Absolute-Discord-Bot?style=for-the-badge">
-    <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FToxocious%2FAbsolute-Discord-Bot">
+  <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FToxocious%2FAbsolute-Discord-Bot">
     <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FToxocious%2FAbsolute&label=Views&countColor=%234a618f&labelStyle=upper" />
   </a>
   <br />
