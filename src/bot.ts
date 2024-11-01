@@ -1,80 +1,62 @@
 import { Client, Collection, Events, ActivityType, GatewayIntentBits } from 'discord.js';
 
-// import MySQL from './classes/mysql';
-
 import { config, validateEnvironment } from './util/validate-env';
 
 import { LoadCommands, SyncCommands } from './handlers/command-handler';
 import { LogHandler } from './handlers/log-handler';
 
-// const MYSQL_INSTANCE: MySQL = MySQL.instance;
+import MySQL from './classes/mysql';
 
-// MYSQL_INSTANCE.connectDatabase()
-//     .catch((err) => console.error("[Absolute / Discord Bot] Failed to connect to Absolute's database", err))
-//     .finally(() => {
-//         (async () => {
-//             if (!validateEnvironment()) {
-//                 return;
-//             }
+const MYSQL_INSTANCE: MySQL = MySQL.instance;
 
-//             const client = new Client({
-//                 // intents: INTENT_OPTIONS,
-//                 intents: Object.values(GatewayIntentBits).reduce((acc, intent: any) => acc | intent, 0),
-//             });
+/**
+ * We only want to start up the Discord bot IF we can make a successful database connection.
+ * This is because much of the bot depends on being able to access the RPG's database for its commands.
+ */
+MYSQL_INSTANCE.connectDatabase()
+    .catch((err) =>
+        console.error("[Absolute / Discord Bot] Failed to connect to Absolute's database", err)
+    )
+    .finally(() => {
+        (async () => {
+            // Validate our environment variables.
+            // Exits the process if any required values are not found/set.
+            validateEnvironment();
 
-//             client.once(Events.ClientReady, async () => await ON_READY());
+            // Create the Bot client.
+            const client = new Client({
+                // @ts-expect-error - Can not properly type-set `intent`
+                intents: Object.values(GatewayIntentBits).reduce((acc, intent) => acc | intent, 0),
+            });
 
-//             client.on('interactionCreate', async (interaction) => await ON_INTERACTION(interaction));
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore - Doesn't exist on the 'client' type.
+            client.commands = new Collection();
 
-//             await client.login(process.env.DISCORD_BOT_TOKEN as string);
-//         })();
-//     });
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore - Doesn't exist on the 'client' type.
+            client.cooldowns = new Collection();
 
-// client.once(Events.ClientReady, async () => await ON_READY());
+            const logHandler = new LogHandler(client);
 
-// client.on('interactionCreate', async (interaction) => await ON_INTERACTION(interaction));
+            client.once(Events.ClientReady, async () => {
+                client?.user?.setPresence({
+                    activities: [{ name: `Awaiting disaster.`, type: ActivityType.Custom }],
+                    status: 'online',
+                });
 
-// client.login(process.env.DISCORD_BOT_TOKEN as string);
+                // Initlaize handlers.
+                await LoadCommands(client, logHandler).catch(logHandler.error);
+            });
 
-// ============================
-// ============================
-// ============================
+            client.on(Events.InteractionCreate, async (interaction) => {
+                if (!interaction.isCommand()) {
+                    return;
+                }
 
-// Validate our environment variables.
-// Exits the process if any required values are not found/set.
-validateEnvironment();
+                await SyncCommands(client, interaction).catch(logHandler.error);
+            });
 
-// Create the Bot client.
-const client = new Client({
-    // @ts-expect-error - Can not properly type-set `intent`
-    intents: Object.values(GatewayIntentBits).reduce((acc, intent) => acc | intent, 0),
-});
-
-// @ts-ignore
-client.commands = new Collection();
-// @ts-ignore
-client.cooldowns = new Collection();
-
-const logHandler = new LogHandler(client);
-
-client.once(Events.ClientReady, async () => {
-    client?.user?.setPresence({
-        activities: [{ name: `Awaiting disaster.`, type: ActivityType.Custom }],
-        status: 'online',
+            client.login(config.DISCORD_BOT_TOKEN).catch(console.error);
+        })();
     });
-
-    // initlaize handlers
-    await LoadCommands(client, logHandler).catch(logHandler.error);
-    // await eventHandler.loadEvents(client).catch(console.error);
-    // await componentHandler.loadComponents(client).catch(console.error);
-});
-
-client.on(Events.InteractionCreate, async (interaction) => {
-    if (!interaction.isCommand()) {
-        return;
-    }
-
-    await SyncCommands(client, interaction).catch(logHandler.error);
-});
-
-client.login(config.DISCORD_BOT_TOKEN).catch(console.error);
