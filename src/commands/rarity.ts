@@ -14,12 +14,18 @@ const RARITY: CommandInterface = {
     data: new SlashCommandBuilder()
         .setName('rarity')
         .setDescription('Fetches the rarity of a given Pokemon species.')
-        .addStringOption((option) =>
-            option.setName('species').setDescription('The primary Pok&eacute;mon species to find.').setRequired(true)
-        )
-        .addStringOption((option) =>
-            option.setName('forme').setDescription('The forme of the Pok&eacute;mon species.').setRequired(false)
-        ),
+        .addStringOption((option) => {
+            return option
+                .setName('species')
+                .setDescription('The primary Pok&eacute;mon species to find - name or id.')
+                .setRequired(true);
+        })
+        .addStringOption((option) => {
+            return option
+                .setName('forme')
+                .setDescription('The forme of the Pok&eacute;mon species - name or id.')
+                .setRequired(false);
+        }),
 
     run: async (interaction): Promise<void> => {
         try {
@@ -28,7 +34,7 @@ const RARITY: CommandInterface = {
             const SPECIES = interaction.options.get('species', true) as unknown;
             const FORME = interaction.options.get('forme', false) as unknown;
 
-            const RARITY_DATA = await getPokemonRarity(SPECIES as any, FORME as any);
+            const RARITY_DATA = await getPokemonRarity(SPECIES as never, FORME as never);
 
             const COMMAND_EMBED = new EmbedBuilder()
                 .setTitle(`${SPECIES + (FORME ? `(${FORME})` : '')}'s Rarity`)

@@ -14,10 +14,15 @@ const CONNECT: CommandInterface = {
 
     data: new SlashCommandBuilder()
         .setName('connect')
-        .setDescription('Connects your Discord account to your Pok&eacute;mon Absolute RPG account.')
-        .addUserOption((option) =>
-            option.setName('auth_code').setDescription("Authentication code of the player's account").setRequired(true)
-        ),
+        .setDescription(
+            'Connects your Discord account to your Pok&eacute;mon Absolute RPG account.'
+        )
+        .addUserOption((option) => {
+            return option
+                .setName('auth_code')
+                .setDescription("Authentication code of the player's account")
+                .setRequired(true);
+        }),
 
     run: async (interaction): Promise<void> => {
         try {
@@ -47,7 +52,9 @@ const CONNECT: CommandInterface = {
 
                 COMMAND_EMBED = new EmbedBuilder()
                     .setTitle('Account Connected')
-                    .setDescription(`Your account is connected to the RPG account ${CONNECTION_RESPONSE.Username}.`)
+                    .setDescription(
+                        `Your account is connected to the RPG account ${CONNECTION_RESPONSE.Username}.`
+                    )
                     .setColor('#4a618f')
                     .setTimestamp();
             }

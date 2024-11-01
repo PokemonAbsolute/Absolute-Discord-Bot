@@ -8,6 +8,30 @@ import { readFilesRecursively } from '../util/read-files';
 
 import { LogHandler } from './log-handler';
 
+const UnloadCommands = async (
+    rest: REST,
+    client: Client,
+    logHandler: LogHandler
+): Promise<void> => {
+    return;
+
+    console.log('Started clearing commands.');
+
+    const guildsPopulated = ['269182206621122560', '1002005327555862620'];
+
+    for (const guild of guildsPopulated) {
+        await rest.put(Routes.applicationGuildCommands(config.DISCORD_BOT_CLIENT_ID, guild), {
+            body: [],
+        });
+
+        await rest.put(Routes.applicationCommands(config.DISCORD_BOT_CLIENT_ID), {
+            body: [],
+        });
+    }
+
+    console.log('Successfully cleared commands.');
+};
+
 export const LoadCommands = async (client: Client, logHandler: LogHandler): Promise<void> => {
     const commandDirectory = path.join(__dirname, '../commands');
 
@@ -27,20 +51,28 @@ export const LoadCommands = async (client: Client, logHandler: LogHandler): Prom
             if ('data' in command && 'run' in command) {
                 // @ts-ignore
                 client.commands.set(command.data.name, command);
+
+                console.log(command);
             }
         }
 
         const rest = new REST().setToken(config.DISCORD_BOT_TOKEN);
 
+        await UnloadCommands(rest, client, logHandler);
+
+        // re-register commands
         try {
             const now = Date.now();
 
             logHandler.log('Started refreshing application commands.');
 
             // @ts-ignore
-            await rest.put(Routes.applicationGuildCommands(client.user.id, config.DISCORD_GUILD_ID), {
-                body: commandFiles,
-            });
+            await rest.put(
+                Routes.applicationGuildCommands(client.user.id, config.DISCORD_GUILD_ID),
+                {
+                    body: commandFiles,
+                }
+            );
 
             logHandler.log(`Successfully reloaded application commands (${Date.now() - now}ms)`);
         } catch (error) {
@@ -114,7 +146,9 @@ export const SyncCommands = async (client: Client, interaction: Interaction) => 
     // @ts-ignore
     client.globalCooldowns = globalCooldowns;
 
+    // @ts-ignore
     if (globalCooldowns.has(userID)) {
+        // @ts-ignore
         const expirationTime = globalCooldowns.get(userID) + globalCooldownDelay;
 
         if (now < expirationTime) {
@@ -131,8 +165,11 @@ export const SyncCommands = async (client: Client, interaction: Interaction) => 
         }
     }
 
+    // @ts-ignore
     // update global cooldowns
     globalCooldowns.set(userID, now);
+
+    // @ts-ignore
     setTimeout(() => globalCooldowns.delete(userID), globalCooldownDelay);
 
     try {

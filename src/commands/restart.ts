@@ -1,10 +1,12 @@
-import { CommandInteraction, CacheType } from 'discord.js';
+import { CommandInteraction, CacheType, Events, ActivityType } from 'discord.js';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 import { CommandInterface } from '../types/command';
 
 import { createEmbed, EmbedOptions } from '../handlers/embed-builder';
+import { LoadCommands } from '../handlers/command-handler';
+import { LogHandler } from '../handlers/log-handler';
 
 import { config } from '../util/validate-env';
 
@@ -14,7 +16,9 @@ const RESTART: CommandInterface = {
     developerOnly: true,
     ownerOnly: false,
 
-    data: new SlashCommandBuilder().setName('restart').setDescription("Restarts Absolute's Discord Bot."),
+    data: new SlashCommandBuilder()
+        .setName('restart')
+        .setDescription("Restarts Absolute's Discord Bot."),
 
     run: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
         const client = interaction.client;
@@ -23,16 +27,8 @@ const RESTART: CommandInterface = {
 
         try {
             const embedOptions: EmbedOptions = {
-                fields: [
-                    {
-                        name: 'Restart',
-                        value: `Bot is restarting...`,
-                        inline: true,
-                    },
-                ],
-
-                titleText: '**Restart**',
-                description: RESTART.description,
+                titleText: 'Restarting',
+                description: `Absolute Bot is now restarting. Please wait.`,
                 footerText: ``,
                 color: '#4A618F',
                 timestamp: true,
@@ -48,17 +44,20 @@ const RESTART: CommandInterface = {
             await client.destroy();
             await client.login(config.DISCORD_BOT_TOKEN);
 
-            const embedOptions2: EmbedOptions = {
-                fields: [
-                    {
-                        name: 'Restart',
-                        value: `Absolute Bot has successfully restarted.`,
-                        inline: true,
-                    },
-                ],
+            client.once(Events.ClientReady, async () => {
+                client?.user?.setPresence({
+                    activities: [{ name: `Awaiting disaster.`, type: ActivityType.Custom }],
+                    status: 'online',
+                });
 
-                titleText: '**Restarting**',
-                description: RESTART.description,
+                // Initlaize handlers.
+                const logHandler = new LogHandler(client);
+                await LoadCommands(client, logHandler).catch(logHandler.error);
+            });
+
+            const embedOptions2: EmbedOptions = {
+                titleText: 'Restarted',
+                description: `Absolute Bot has successfully restarted.`,
                 footerText: ``,
                 color: '#4A618F',
                 timestamp: true,

@@ -21,9 +21,15 @@ const ABOUT: CommandInterface = {
         try {
             await interaction.deferReply();
 
+            const aboutDescription = `
+              The Pokémon Absolute is an up-to-date multiplayer Pokémon RPG, featuring all currently released canonical Pokémon from the main Pokémon games!\n
+              Among featuring a plethora of unique gameplay content to explore, we offer content that will appeal to all trainers, new and old, including content that Pokémon veterans will find nostalgic.\n
+              We're open-source on GitHub if you'd like to take a peek at the magic behind the curtain!
+            `;
+
             const embedOptions: EmbedOptions = {
                 titleText: 'About Absolute',
-                description: `Absolute is a web-based Pokemon RPG.`,
+                description: aboutDescription,
                 footerText: `Made with energy drinks by ${config.DEVELOPER_NAME}`,
                 color: '#4A618F',
                 timestamp: false,

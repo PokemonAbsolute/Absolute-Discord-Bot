@@ -63,7 +63,6 @@ const BOTSTATUS: CommandInterface = {
                         `• OS: ${os.type()} ${os.release()} (${os.arch()})\n` +
                         `• Uptime: ${formatUptime(os.uptime())}\n` +
                         `• Avaiable Memory: ${(os.totalmem() / (1024 * 1024)).toFixed(2)}MB\n` +
-                        //`• Memory Usage: ${(process.memoryUsage().rss / (1024 * 1024)).toFixed(2)} MB\n` +
                         `• Memory Usage: ${getMemoryUsage().usedMemMB.toFixed(
                             2
                         )}MB (${getMemoryUsage().usedMemPercent.toFixed(2)}%)\n` +
@@ -77,10 +76,10 @@ const BOTSTATUS: CommandInterface = {
                         `• Bot Version: ${packageInfo.version}\n` +
                         `• Discord.js Version: ${version}\n` +
                         `• Client Ping: ${
-                            (await interaction.fetchReply()).createdTimestamp - interaction.createdTimestamp
+                            (await interaction.fetchReply()).createdTimestamp -
+                            interaction.createdTimestamp
                         }ms\n` +
-                        `• Client Uptime: ${formatUptime(client.uptime)}\n` +
-                        //`• Websocket Ping: ${client.ws.ping}ms\n` +
+                        `• Client Uptime: ${formatUptime(client.uptime / 1000)}\n` +
                         `• Guild Count: ${client.guilds.cache.size}\n` +
                         `• User Count: ${totalUsers}\n` +
                         `• Channel Count: ${client.channels.cache.size}\n\`\`\``,

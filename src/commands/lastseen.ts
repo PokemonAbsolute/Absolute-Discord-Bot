@@ -15,9 +15,12 @@ const LAST_SEEN: CommandInterface = {
     data: new SlashCommandBuilder()
         .setName('lastseen')
         .setDescription('Fetches the time that the specified user was last seen on.')
-        .addStringOption((option) =>
-            option.setName('user').setDescription('Username or ID of the player.').setRequired(true)
-        ),
+        .addStringOption((option) => {
+            return option
+                .setName('user')
+                .setDescription('Username or user ID of the player.')
+                .setRequired(true);
+        }),
 
     run: async (interaction): Promise<void> => {
         try {

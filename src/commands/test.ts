@@ -9,14 +9,16 @@ const TEST: CommandInterface = {
     developerOnly: false,
     ownerOnly: false,
 
-    data: new SlashCommandBuilder().setName('test').setDescription('Generic test command. Does nothing.'),
+    data: new SlashCommandBuilder()
+        .setName('test')
+        .setDescription('Generic test command. Does nothing.'),
 
     run: async (interaction) => {
         try {
             await interaction.deferReply();
 
             const COMMAND_EMBED = new EmbedBuilder()
-                .setTitle('Absolute Bot | Test Command')
+                .setTitle('Testing, Testing')
                 .setDescription('Generic test command. Does nothing.')
                 .setColor('#4a618f')
                 .setTimestamp();
