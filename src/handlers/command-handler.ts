@@ -66,8 +66,8 @@ export const LoadCommands = async (client: Client, logHandler: LogHandler): Prom
 
             logHandler.log('Started refreshing application commands.');
 
-            // @ts-ignore
             await rest.put(
+                // @ts-ignore
                 Routes.applicationGuildCommands(client.user.id, config.DISCORD_GUILD_ID),
                 {
                     body: commandFiles,
