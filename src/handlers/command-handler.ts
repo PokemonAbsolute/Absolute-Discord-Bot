@@ -102,15 +102,19 @@ export const SyncCommands = async (client: Client, interaction: Interaction) => 
         });
     }
 
+    // Basic command user information.
     const userID = interaction.user.id;
+    const devOwnerCooldownModifier =
+        userID === interaction.guild?.ownerId || config.DEVELOPER_ID?.includes(userID) ? 0 : 1_000;
 
+    // Handle cooldown between command usage.
+    // Default base cooldown is 3 seconds (3 * 1_000)
     const defaultCooldown = 3;
-
-    // TODO: Implement reduced cooldown for server owner, devs, and mods.
-    const globalCooldownDelay = (command.globalCooldown ?? defaultCooldown) * 1_000;
+    const globalCooldownDelay =
+        (command.globalCooldown ?? defaultCooldown) * devOwnerCooldownModifier;
 
     // Server owner commands.
-    if (command.ownerOnly && interaction.user.id !== interaction.guild?.ownerId) {
+    if (command.ownerOnly && userID !== interaction.guild?.ownerId) {
         return interaction.reply({
             content: 'This command can only be executed by the server owner.',
             ephemeral: true,
