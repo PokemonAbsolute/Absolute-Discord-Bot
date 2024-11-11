@@ -4,6 +4,8 @@ import {
     SlashCommandBuilder,
     SlashCommandSubcommandsOnlyBuilder,
     SlashCommandOptionsOnlyBuilder,
+    AutocompleteInteraction,
+    CacheType,
 } from 'discord.js';
 
 export interface CommandInterface {
@@ -23,5 +25,6 @@ export interface CommandInterface {
         | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
         | SlashCommandOptionsOnlyBuilder;
 
+    autocomplete?: (interaction: AutocompleteInteraction<CacheType>) => Promise<void>;
     execute: (interaction: CommandInteraction) => Promise<void>;
 }

@@ -95,7 +95,6 @@ export class CommandManager {
                 const commandPath = path.join(categoryPath, file);
                 const command: CommandInterface = require(commandPath).default;
 
-                console.log(command, '\n\n');
                 if ('data' in command && 'execute' in command) {
                     command.category = category;
                     command.cooldown = command.cooldown ?? 3;
@@ -159,60 +158,87 @@ export class CommandManager {
 
         // Handle command interactions.
         this.client.on(Events.InteractionCreate, async (interaction) => {
-            if (!interaction.isChatInputCommand()) {
-                return;
-            }
+            // Handle processing of commands that use autocomplete.
+            if (interaction.isAutocomplete()) {
+                const command = this.commands.get(interaction.commandName);
 
-            const command = this.commands.get(interaction.commandName);
-
-            if (!command) {
-                this.logHandler.warn(`No command matching ${interaction.commandName} was found.`);
-                return;
-            }
-
-            try {
-                const userID = interaction.user.id;
-
-                const devOwnerCooldownModifier =
-                    userID === interaction.guild?.ownerId || config.DEVELOPER_ID?.includes(userID)
-                        ? 0
-                        : 1_000;
-
-                await this.HandleCooldown(interaction, command, devOwnerCooldownModifier);
-
-                // Owner only commands.
-                if (command.ownerOnly && userID !== interaction.guild?.ownerId) {
-                    return interaction.reply({
-                        content: 'This command can only be executed by the server owner.',
-                        ephemeral: true,
-                    });
+                if (!command) {
+                    this.logHandler.warn(
+                        `No command matching ${interaction.commandName} was found.`
+                    );
+                    return;
                 }
 
-                // Developer only commands.
-                if (command.developerOnly && !config.DEVELOPER_ID?.includes(userID)) {
-                    return interaction.reply({
-                        content: 'This command can only be executed by a developer.',
-                        ephemeral: true,
-                    });
+                if (!command.autocomplete) {
+                    this.logHandler.warn(
+                        `Command ${command.data.name} does not have an autocomplete function.`
+                    );
+                    return;
                 }
 
-                // Check if the command requires any permissions, and if the user has them.
-                if (command.permissions) {
-                    const member = interaction.member;
+                try {
+                    await command.autocomplete(interaction);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
 
-                    // @ts-expect-error - .has() does not exist on type 'string | Readonly<PermissionsBitField>'
-                    if (!member?.permissions.has(command.permissions)) {
+            // Handle exeuction of chat commands.
+            if (interaction.isChatInputCommand()) {
+                const command = this.commands.get(interaction.commandName);
+
+                if (!command) {
+                    this.logHandler.warn(
+                        `No command matching ${interaction.commandName} was found.`
+                    );
+                    return;
+                }
+
+                try {
+                    const userID = interaction.user.id;
+
+                    const devOwnerCooldownModifier =
+                        userID === interaction.guild?.ownerId ||
+                        config.DEVELOPER_ID?.includes(userID)
+                            ? 0
+                            : 1_000;
+
+                    await this.HandleCooldown(interaction, command, devOwnerCooldownModifier);
+
+                    // Owner only commands.
+                    if (command.ownerOnly && userID !== interaction.guild?.ownerId) {
                         return interaction.reply({
-                            content: 'You lack the required permissions to use this command.',
+                            content: 'This command can only be executed by the server owner.',
                             ephemeral: true,
                         });
                     }
-                }
 
-                // Execute the command.
-                await command.execute(interaction);
-            } catch (error) {
-                this.logHandler.error(`Error running command ${command.data.name}:`, error);
+                    // Developer only commands.
+                    if (command.developerOnly && !config.DEVELOPER_ID?.includes(userID)) {
+                        return interaction.reply({
+                            content: 'This command can only be executed by a developer.',
+                            ephemeral: true,
+                        });
+                    }
+
+                    // Check if the command requires any permissions, and if the user has them.
+                    if (command.permissions) {
+                        const member = interaction.member;
+
+                        // @ts-expect-error - .has() does not exist on type 'string | Readonly<PermissionsBitField>'
+                        if (!member?.permissions.has(command.permissions)) {
+                            return interaction.reply({
+                                content: 'You lack the required permissions to use this command.',
+                                ephemeral: true,
+                            });
+                        }
+                    }
+
+                    // Execute the command.
+                    await command.execute(interaction);
+                } catch (error) {
+                    this.logHandler.error(`Error running command ${command.data.name}:`, error);
+                }
             }
         });
     }
