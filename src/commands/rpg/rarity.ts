@@ -1,8 +1,10 @@
-import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import { AutocompleteInteraction, CacheType, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
 import { CommandInterface } from '../../types/command';
 
-import { getPokemonRarity } from '../../util/get-pokemon-rarity';
+import { getPokemonRarity, RarityCommandOptionData } from '../../util/get-pokemon-rarity';
+
+import PokedexData from '../../data/pokedex.json';
 
 const RARITY: CommandInterface = {
     name: 'rarity',
@@ -19,56 +21,85 @@ const RARITY: CommandInterface = {
     data: new SlashCommandBuilder()
         .setName('rarity')
         .setDescription('Fetches the rarity of a given Pokemon species.')
-        .addStringOption((option) => {
-            return option
+        .addStringOption((option) =>
+            option
                 .setName('species')
-                .setDescription('The primary Pok&eacute;mon species to find - name or id.')
-                .setRequired(true);
-        })
-        .addStringOption((option) => {
-            return option
-                .setName('forme')
-                .setDescription('The forme of the Pok&eacute;mon species - name or id.')
-                .setRequired(false);
-        }),
+                .setDescription('The primary Pokemon species to find.')
+                .setRequired(true)
+                .setAutocomplete(true)
+        ),
+
+    autocomplete: async (interaction: AutocompleteInteraction<CacheType>): Promise<void> => {
+        const focusedValue = interaction.options.getFocused();
+
+        if (focusedValue.trim() === '') {
+            return await interaction.respond(
+                PokedexData.slice(0, 10).map((DexEntry) => ({
+                    name: DexEntry.Fullname ?? DexEntry.Name,
+                    value: `${DexEntry.Pokedex_ID}.${DexEntry.Alt_ID}`.toString(),
+                }))
+            );
+        }
+
+        const filteredEntries = PokedexData.filter((DexEntry) =>
+            (DexEntry?.Fullname ?? DexEntry.Name)
+                .toLowerCase()
+                .startsWith(focusedValue.toLowerCase())
+        );
+
+        const maxResults = 25;
+        const results = filteredEntries.slice(0, maxResults).map((DexEntry) => ({
+            name: DexEntry.Fullname ?? DexEntry.Name,
+            value: `${DexEntry.Pokedex_ID}.${DexEntry.Alt_ID}`.toString(),
+        }));
+
+        await interaction.respond(results);
+    },
 
     execute: async (interaction): Promise<void> => {
         try {
             await interaction.deferReply();
 
-            const SPECIES = interaction.options.get('species', true) as unknown;
-            const FORME = interaction.options.get('forme', false) as unknown;
+            const PokemonSpecies = interaction.options.get(
+                'species',
+                true
+            ) as unknown as RarityCommandOptionData;
 
-            const RARITY_DATA = await getPokemonRarity(SPECIES as never, FORME as never);
+            const [ID, Alt_ID] = PokemonSpecies.value.split('.');
 
-            const COMMAND_EMBED = new EmbedBuilder()
-                .setTitle(`${SPECIES + (FORME ? `(${FORME})` : '')}'s Rarity`)
-                .setColor('#4a618f')
-                .setTimestamp();
+            const RarityData = await getPokemonRarity(ID, Alt_ID);
 
-            if (typeof RARITY_DATA === 'undefined') {
-                COMMAND_EMBED.addFields({
-                    name: 'Error',
-                    value: 'An error occurred while fetching the rarity of the specified Pokemon.',
+            if (typeof RarityData === 'undefined') {
+                await interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setTitle(`Rarity Checked`)
+                            .setDescription(
+                                'An error occurred while fetching the rarity of the specified Pokemon.'
+                            )
+                            .setColor('#4a618f')
+                            .setTimestamp(),
+                    ],
                 });
-            } else {
-                COMMAND_EMBED.addFields(
-                    {
-                        name: 'Total',
-                        value: RARITY_DATA[0]?.TOTAL?.toLocaleString() ?? '0',
-                    },
-                    {
-                        name: 'Normal',
-                        value: RARITY_DATA[0]?.NORMAL?.toLocaleString() ?? '0',
-                    },
-                    {
-                        name: 'Shiny',
-                        value: RARITY_DATA[0]?.SHINY?.toLocaleString() ?? '0',
-                    }
-                );
+
+                return;
             }
 
-            await interaction.editReply({ embeds: [COMMAND_EMBED] });
+            const PokemonFullName = RarityData[0].Forme
+                ? `${RarityData[0].Name} ${RarityData[0].Forme}`
+                : RarityData[0].Name;
+
+            const RarityEmbed = new EmbedBuilder()
+                .setTitle(`${PokemonFullName}'s Rarity`)
+                .setColor('#4a618f')
+                .setTimestamp()
+                .addFields(
+                    { name: 'Total', value: RarityData[0].TOTAL.toLocaleString() },
+                    { name: 'Normal', value: RarityData[0].NORMAL.toLocaleString() },
+                    { name: 'Shiny', value: RarityData[0].SHINY.toLocaleString() }
+                );
+
+            await interaction.editReply({ embeds: [RarityEmbed] });
         } catch (err) {
             console.warn('[Command | Test] An error occurred:', err);
         }
