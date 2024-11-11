@@ -69,6 +69,7 @@ const RARITY: CommandInterface = {
 
             const RarityData = await getPokemonRarity(ID, Alt_ID);
 
+            // Invalid Pokemon was selected.
             if (typeof RarityData === 'undefined') {
                 await interaction.editReply({
                     embeds: [
@@ -86,17 +87,17 @@ const RARITY: CommandInterface = {
             }
 
             const PokemonFullName = RarityData[0].Forme
-                ? `${RarityData[0].Name} ${RarityData[0].Forme}`
-                : RarityData[0].Name;
+                ? `${RarityData[0].Pokemon} ${RarityData[0].Forme}`
+                : RarityData[0].Pokemon;
 
             const RarityEmbed = new EmbedBuilder()
                 .setTitle(`${PokemonFullName}'s Rarity`)
                 .setColor('#4a618f')
                 .setTimestamp()
                 .addFields(
-                    { name: 'Total', value: RarityData[0].TOTAL.toLocaleString() },
-                    { name: 'Normal', value: RarityData[0].NORMAL.toLocaleString() },
-                    { name: 'Shiny', value: RarityData[0].SHINY.toLocaleString() }
+                    { name: 'Total', value: RarityData[0]?.TOTAL?.toLocaleString() ?? '0' },
+                    { name: 'Normal', value: RarityData[0]?.NORMAL?.toLocaleString() ?? '0' },
+                    { name: 'Shiny', value: RarityData[0]?.SHINY?.toLocaleString() ?? '0' }
                 );
 
             await interaction.editReply({ embeds: [RarityEmbed] });
