@@ -16,6 +16,7 @@ export class CommandManager {
     private client: Client;
     private logHandler: LogHandler;
 
+    private commandData: Array<any> = [];
     private commands: Collection<string, CommandInterface> = new Collection();
     private cooldowns: Collection<string, any> = new Collection();
     private categories: Collection<string, any> = new Collection();
@@ -56,7 +57,7 @@ export class CommandManager {
             await rest.put(
                 Routes.applicationGuildCommands(this.client.user.id, config.DISCORD_GUILD_ID),
                 {
-                    body: this.commands,
+                    body: this.commandData,
                 }
             );
 
@@ -94,10 +95,12 @@ export class CommandManager {
                 const commandPath = path.join(categoryPath, file);
                 const command: CommandInterface = require(commandPath).default;
 
+                console.log(command, '\n\n');
                 if ('data' in command && 'execute' in command) {
                     command.category = category;
                     command.cooldown = command.cooldown ?? 3;
 
+                    this.commandData.push(command.data.toJSON());
                     this.commands.set(command.data.name, command);
                     this.categories.get(category).set(command.data.name, command);
 
