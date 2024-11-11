@@ -15,7 +15,6 @@
     "start:dev": "nodemon ./src/bot.ts"
   },
   "dependencies": {
-    "@discordjs/builders": "^0.13.0",
     "@discordjs/rest": "^0.4.1",
     "chalk": "^5.3.0",
     "discord.js": "^14.5.0",

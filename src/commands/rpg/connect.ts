@@ -1,14 +1,19 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
-import { getPlayerbyAuthCode } from '../util/get-player-by-auth-code';
-import { connectDiscordAccount } from '../util/connect-discord-account';
+import { CommandInterface } from '../../types/command';
 
-import { CommandInterface } from '../types/command';
+import { getPlayerbyAuthCode } from '../../util/get-player-by-auth-code';
+import { connectDiscordAccount } from '../../util/connect-discord-account';
 
 const CONNECT: CommandInterface = {
     name: 'connect',
     description: 'Connects your Discord account to your Pokemon Absolute RPG account.',
+
+    category: 'rpg',
+    cooldown: 0,
+
+    permissions: [],
+
     developerOnly: false,
     ownerOnly: false,
 
@@ -19,16 +24,16 @@ const CONNECT: CommandInterface = {
         )
         .addUserOption((option) => {
             return option
-                .setName('auth_code')
+                .setName('authcode')
                 .setDescription("Authentication code of the player's account")
                 .setRequired(true);
         }),
 
-    run: async (interaction): Promise<void> => {
+    execute: async (interaction): Promise<void> => {
         try {
             await interaction.deferReply();
 
-            const AUTH_CODE = interaction.options.get('auth_code') as unknown;
+            const AUTH_CODE = interaction.options.get('authcode') as unknown;
 
             const PLAYER_DATA = await getPlayerbyAuthCode(AUTH_CODE as string);
 

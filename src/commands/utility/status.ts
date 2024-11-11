@@ -1,15 +1,13 @@
 import os from 'os';
 import { execSync } from 'child_process';
 
-import packageInfo from '../../package.json';
+import { CommandInteraction, SlashCommandBuilder, CacheType, version } from 'discord.js';
 
-import { CommandInteraction, CacheType, version } from 'discord.js';
+import packageInfo from '../../../package.json';
 
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { CommandInterface } from '../../types/command';
 
-import { CommandInterface } from '../types/command';
-
-import { createEmbed, EmbedOptions } from '../handlers/embed-builder';
+import { createEmbed, EmbedOptions } from '../../handlers/embed-builder';
 
 // Current Node.JS version
 const getNodeInfo = () => {
@@ -40,6 +38,12 @@ const getMemoryUsage = () => {
 const BOTSTATUS: CommandInterface = {
     name: 'status',
     description: 'Displays the current run-time information of Absolute bot.',
+
+    category: 'utility',
+    cooldown: 0,
+
+    permissions: [],
+
     developerOnly: true,
     ownerOnly: false,
 
@@ -47,7 +51,7 @@ const BOTSTATUS: CommandInterface = {
         .setName('status')
         .setDescription('Displays the current run-time information of Absolute bot.'),
 
-    run: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
+    execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
         const client = interaction.client;
 
         const totalUsers = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);

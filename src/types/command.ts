@@ -1,6 +1,10 @@
-import { SlashCommandBuilder, SlashCommandSubcommandBuilder } from '@discordjs/builders';
-
-import { CommandInteraction } from 'discord.js';
+import {
+    CommandInteraction,
+    PermissionFlagsBits,
+    SlashCommandBuilder,
+    SlashCommandSubcommandsOnlyBuilder,
+    SlashCommandOptionsOnlyBuilder,
+} from 'discord.js';
 
 export interface CommandInterface {
     name: string;
@@ -8,7 +12,16 @@ export interface CommandInterface {
     developerOnly: boolean;
     ownerOnly: boolean;
 
-    data: Omit<SlashCommandBuilder, 'addSubcommandGroup' | 'addSubcommand'> | SlashCommandSubcommandBuilder;
+    category: string;
+    cooldown: number | undefined;
 
-    run: (interaction: CommandInteraction) => Promise<void>;
+    permissions?: (typeof PermissionFlagsBits)[];
+
+    data:
+        | SlashCommandBuilder
+        | SlashCommandSubcommandsOnlyBuilder
+        | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
+        | SlashCommandOptionsOnlyBuilder;
+
+    execute: (interaction: CommandInteraction) => Promise<void>;
 }

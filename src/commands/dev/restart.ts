@@ -1,18 +1,28 @@
-import { CommandInteraction, CacheType, Events, ActivityType } from 'discord.js';
+import {
+    CommandInteraction,
+    CacheType,
+    Events,
+    ActivityType,
+    SlashCommandBuilder,
+} from 'discord.js';
 
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { CommandInterface } from '../../types/command';
 
-import { CommandInterface } from '../types/command';
+import { createEmbed, EmbedOptions } from '../../handlers/embed-builder';
+import { LogHandler } from '../../handlers/log-handler';
 
-import { createEmbed, EmbedOptions } from '../handlers/embed-builder';
-import { LoadCommands } from '../handlers/command-handler';
-import { LogHandler } from '../handlers/log-handler';
-
-import { config } from '../util/validate-env';
+import { config } from '../../util/validate-env';
+import { CommandManager } from '../../classes/CommandManager';
 
 const RESTART: CommandInterface = {
     name: 'restart',
     description: "Restarts Absolute's Discord Bot.",
+
+    category: 'dev',
+    cooldown: 0,
+
+    permissions: [],
+
     developerOnly: true,
     ownerOnly: false,
 
@@ -20,7 +30,7 @@ const RESTART: CommandInterface = {
         .setName('restart')
         .setDescription("Restarts Absolute's Discord Bot."),
 
-    run: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
+    execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
         const client = interaction.client;
 
         await interaction.deferReply();
@@ -34,7 +44,6 @@ const RESTART: CommandInterface = {
                 timestamp: true,
             };
 
-            // create embed
             const embed = createEmbed(embedOptions);
 
             await interaction.editReply({
@@ -52,7 +61,7 @@ const RESTART: CommandInterface = {
 
                 // Initlaize handlers.
                 const logHandler = new LogHandler(client);
-                await LoadCommands(client, logHandler).catch(logHandler.error);
+                const commandManager = new CommandManager(client, logHandler).Initialize();
             });
 
             const embedOptions2: EmbedOptions = {
@@ -63,7 +72,6 @@ const RESTART: CommandInterface = {
                 timestamp: true,
             };
 
-            // create embed
             const embed2 = createEmbed(embedOptions2);
 
             await interaction.followUp({

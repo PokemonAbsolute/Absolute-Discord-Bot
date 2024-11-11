@@ -1,13 +1,18 @@
-import { getPokemonRarity } from '../util/get-pokemon-rarity';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { EmbedBuilder } from 'discord.js';
+import { CommandInterface } from '../../types/command';
 
-import { CommandInterface } from '../types/command';
+import { getPokemonRarity } from '../../util/get-pokemon-rarity';
 
 const RARITY: CommandInterface = {
     name: 'rarity',
     description: 'Fetches the rarity of a given Pokemon species.',
+
+    category: 'rpg',
+    cooldown: 0,
+
+    permissions: [],
+
     developerOnly: false,
     ownerOnly: false,
 
@@ -27,7 +32,7 @@ const RARITY: CommandInterface = {
                 .setRequired(false);
         }),
 
-    run: async (interaction): Promise<void> => {
+    execute: async (interaction): Promise<void> => {
         try {
             await interaction.deferReply();
 

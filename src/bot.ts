@@ -2,7 +2,8 @@ import { Client, Collection, Events, ActivityType, GatewayIntentBits } from 'dis
 
 import { config, validateEnvironment } from './util/validate-env';
 
-import { LoadCommands, SyncCommands } from './handlers/command-handler';
+import { CommandManager } from './classes/CommandManager';
+
 import { LogHandler } from './handlers/log-handler';
 
 import MySQL from './classes/mysql';
@@ -29,32 +30,18 @@ MYSQL_INSTANCE.connectDatabase()
                 intents: Object.values(GatewayIntentBits).reduce((acc, intent) => acc | intent, 0),
             });
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore - Doesn't exist on the 'client' type.
-            client.commands = new Collection();
-
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore - Doesn't exist on the 'client' type.
-            client.cooldowns = new Collection();
-
             const logHandler = new LogHandler(client);
+            const commandManager = new CommandManager(client, logHandler);
 
             client.once(Events.ClientReady, async () => {
+                logHandler.log(`Bot has been logged in as ${client.user?.displayName}!`);
+
                 client?.user?.setPresence({
                     activities: [{ name: `Awaiting disaster.`, type: ActivityType.Custom }],
                     status: 'online',
                 });
 
-                // Initlaize handlers.
-                await LoadCommands(client, logHandler).catch(logHandler.error);
-            });
-
-            client.on(Events.InteractionCreate, async (interaction) => {
-                if (!interaction.isCommand()) {
-                    return;
-                }
-
-                await SyncCommands(client, interaction).catch(logHandler.error);
+                commandManager.Initialize();
             });
 
             client.login(config.DISCORD_BOT_TOKEN).catch(console.error);

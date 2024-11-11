@@ -1,14 +1,20 @@
-import { lastSeenOn } from '../util/last-seen';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { EmbedBuilder } from 'discord.js';
+import { CommandInterface } from '../../types/command';
 
-import { CommandInterface } from '../types/command';
-import MySQL from '../classes/mysql';
+import MySQL from '../../classes/mysql';
+
+import { lastSeenOn } from '../../util/last-seen';
 
 const LAST_SEEN: CommandInterface = {
     name: 'lastseen',
     description: 'Fetches the time that the specified user was last seen on.',
+
+    category: 'rpg',
+    cooldown: 0,
+
+    permissions: [],
+
     developerOnly: false,
     ownerOnly: false,
 
@@ -22,7 +28,7 @@ const LAST_SEEN: CommandInterface = {
                 .setRequired(true);
         }),
 
-    run: async (interaction): Promise<void> => {
+    execute: async (interaction): Promise<void> => {
         try {
             await interaction.deferReply();
 

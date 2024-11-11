@@ -1,11 +1,16 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
-import { CommandInterface } from '../types/command';
+import { CommandInterface } from '../../types/command';
 
 const TEST: CommandInterface = {
     name: 'test',
     description: 'Generic test command. Does nothing.',
+
+    category: 'utility',
+    cooldown: 0,
+
+    permissions: [],
+
     developerOnly: false,
     ownerOnly: false,
 
@@ -13,7 +18,7 @@ const TEST: CommandInterface = {
         .setName('test')
         .setDescription('Generic test command. Does nothing.'),
 
-    run: async (interaction) => {
+    execute: async (interaction) => {
         try {
             await interaction.deferReply();
 

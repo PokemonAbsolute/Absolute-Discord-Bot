@@ -1,15 +1,20 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js';
 
-import { CommandInterface } from '../types/command';
+import { CommandInterface } from '../../types/command';
 
-import { createEmbed, EmbedOptions } from '../handlers/embed-builder';
+import { createEmbed, EmbedOptions } from '../../handlers/embed-builder';
 
-import { config } from '../util/validate-env';
+import { config } from '../../util/validate-env';
 
 const ABOUT: CommandInterface = {
     name: 'about',
     description: "Displays information about Absolute's Discord Bot.",
+
+    category: 'utility',
+    cooldown: 0,
+
+    permissions: [],
+
     developerOnly: false,
     ownerOnly: false,
 
@@ -17,7 +22,7 @@ const ABOUT: CommandInterface = {
         .setName('about')
         .setDescription("Displays information about Absolute's Discord Bot."),
 
-    run: async (interaction) => {
+    execute: async (interaction) => {
         try {
             await interaction.deferReply();
 
