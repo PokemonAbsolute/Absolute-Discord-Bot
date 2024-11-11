@@ -8,12 +8,6 @@ export interface PokemonRarityData {
     SHINY: number;
 }
 
-export interface RarityCommandOptionData {
-    name: string;
-    type: number;
-    value: string;
-}
-
 export const getPokemonRarity = async (ID: string, Alt_ID: string) => {
     let MYSQL_QUERY =
         'SELECT p.`Pokemon`, p.`Forme`, r.`TOTAL`, r.`NORMAL`, r.`SHINY` FROM `pokedex` ' +

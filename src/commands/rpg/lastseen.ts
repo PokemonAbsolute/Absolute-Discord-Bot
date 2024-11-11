@@ -1,10 +1,15 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
-import { CommandInterface } from '../../types/command';
+import { CommandInterface, CommandOptionData } from '../../types/command';
 
 import MySQL from '../../classes/mysql';
 
 import { lastSeenOn } from '../../util/last-seen';
+
+interface UserData {
+    Username: string;
+    Last_Active: number;
+}
 
 const LAST_SEEN: CommandInterface = {
     name: 'lastseen',
@@ -32,11 +37,14 @@ const LAST_SEEN: CommandInterface = {
         try {
             await interaction.deferReply();
 
-            const USER_OPTION = interaction.options.get('user', true);
+            const USER_OPTION = interaction.options.get(
+                'user',
+                true
+            ) as unknown as CommandOptionData;
 
-            const USER_DATA_QUERY = await MySQL.doQuery(
+            const USER_DATA_QUERY = await MySQL.doQuery<UserData>(
                 'SELECT `Username`, `Last_Active` FROM `users` WHERE UPPER(`Username`) = UPPER(?) OR `ID` = ? LIMIT 1',
-                [USER_OPTION, USER_OPTION]
+                [USER_OPTION.value, USER_OPTION.value]
             );
 
             let COMMAND_EMBED: EmbedBuilder;
@@ -46,7 +54,7 @@ const LAST_SEEN: CommandInterface = {
                     .setTitle('Command Error')
                     .addFields({
                         name: 'Description',
-                        value: `Unable to find user data for ${USER_OPTION}.`,
+                        value: `Unable to find user data for ${USER_OPTION.value}.`,
                     })
                     .setColor('#FF0000')
                     .setTimestamp();

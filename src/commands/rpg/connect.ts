@@ -1,6 +1,6 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
-import { CommandInterface } from '../../types/command';
+import { CommandInterface, CommandOptionData } from '../../types/command';
 
 import { getPlayerbyAuthCode } from '../../util/get-player-by-auth-code';
 import { connectDiscordAccount } from '../../util/connect-discord-account';
@@ -19,10 +19,8 @@ const CONNECT: CommandInterface = {
 
     data: new SlashCommandBuilder()
         .setName('connect')
-        .setDescription(
-            'Connects your Discord account to your Pok&eacute;mon Absolute RPG account.'
-        )
-        .addUserOption((option) => {
+        .setDescription('Connects your Discord account to your Pokemon Absolute RPG account.')
+        .addStringOption((option) => {
             return option
                 .setName('authcode')
                 .setDescription("Authentication code of the player's account")
@@ -33,9 +31,9 @@ const CONNECT: CommandInterface = {
         try {
             await interaction.deferReply();
 
-            const AUTH_CODE = interaction.options.get('authcode') as unknown;
+            const AUTH_CODE = interaction.options.get('authcode') as unknown as CommandOptionData;
 
-            const PLAYER_DATA = await getPlayerbyAuthCode(AUTH_CODE as string);
+            const PLAYER_DATA = await getPlayerbyAuthCode(AUTH_CODE.value);
 
             let COMMAND_EMBED: EmbedBuilder;
 
@@ -52,7 +50,7 @@ const CONNECT: CommandInterface = {
                 const CONNECTION_RESPONSE = await connectDiscordAccount(
                     interaction.user.id,
                     interaction.user.tag,
-                    AUTH_CODE as string
+                    AUTH_CODE.value
                 );
 
                 COMMAND_EMBED = new EmbedBuilder()

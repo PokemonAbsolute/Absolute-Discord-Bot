@@ -1,8 +1,8 @@
 import { AutocompleteInteraction, CacheType, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
-import { CommandInterface } from '../../types/command';
+import { CommandInterface, CommandOptionData } from '../../types/command';
 
-import { getPokemonRarity, RarityCommandOptionData } from '../../util/get-pokemon-rarity';
+import { getPokemonRarity } from '../../util/get-pokemon-rarity';
 
 import PokedexData from '../../data/pokedex.json';
 
@@ -63,7 +63,7 @@ const RARITY: CommandInterface = {
             const PokemonSpecies = interaction.options.get(
                 'species',
                 true
-            ) as unknown as RarityCommandOptionData;
+            ) as unknown as CommandOptionData;
 
             const [ID, Alt_ID] = PokemonSpecies.value.split('.');
 

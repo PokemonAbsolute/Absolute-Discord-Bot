@@ -28,3 +28,9 @@ export interface CommandInterface {
     autocomplete?: (interaction: AutocompleteInteraction<CacheType>) => Promise<void>;
     execute: (interaction: CommandInteraction) => Promise<void>;
 }
+
+export interface CommandOptionData {
+    name: string;
+    type: number;
+    value: string;
+}
