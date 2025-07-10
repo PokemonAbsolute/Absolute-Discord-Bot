@@ -58,6 +58,9 @@ const RARITY: CommandInterface = {
 
     execute: async (interaction): Promise<void> => {
         try {
+            // Ensure the interaction is a chat input command before accessing options
+            if (!interaction.isChatInputCommand()) return;
+
             await interaction.deferReply();
 
             const PokemonSpecies = interaction.options.get(

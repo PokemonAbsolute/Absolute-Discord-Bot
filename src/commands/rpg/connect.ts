@@ -29,6 +29,9 @@ const CONNECT: CommandInterface = {
 
     execute: async (interaction): Promise<void> => {
         try {
+            // Ensure the interaction is a chat input command before accessing options
+            if (!interaction.isChatInputCommand()) return;
+
             await interaction.deferReply();
 
             const AUTH_CODE = interaction.options.get('authcode') as unknown as CommandOptionData;
